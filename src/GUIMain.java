@@ -33,15 +33,7 @@ public class GUIMain extends Application{
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Open Resource File");
             File file = fileChooser.showOpenDialog(primaryStage);
-
-            try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-                String line;
-                while ((line = br.readLine()) != null) {
-                    System.out.println(line);
-                }
-            }
-            catch(IOException a){}
-
+            removeRaceNumber(file);
         });
 
         pane.getChildren().addAll(relayFix,moreThanOneDay);
@@ -49,4 +41,26 @@ public class GUIMain extends Application{
         primaryStage.setScene(new Scene(pane,400,300));
         primaryStage.show();
     }
+
+    private File removeRaceNumber(File file){
+
+        String input = "";
+
+
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                input += line;
+            }
+        }
+        catch(IOException a){}
+
+        int startIndex = input.indexOf("<RaceNumber>");
+        int endIndex = input.indexOf("</RaceNumber>");
+        String toBeReplaced = input.substring(startIndex,endIndex+13);
+        System.out.println(input.replace(toBeReplaced,""));
+
+        return file;
+    }
+
 }

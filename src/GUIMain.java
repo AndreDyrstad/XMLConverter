@@ -5,10 +5,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 /**
  * Created by ady on 14/02/2017.
@@ -45,7 +42,9 @@ public class GUIMain extends Application{
     private File removeRaceNumber(File file){
 
         String input = "";
-
+        String fileName = file.getName();
+        System.out.println(fileName);
+        System.out.println(file.getAbsolutePath());
 
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
@@ -58,7 +57,12 @@ public class GUIMain extends Application{
         int startIndex = input.indexOf("<RaceNumber>");
         int endIndex = input.indexOf("</RaceNumber>");
         String toBeReplaced = input.substring(startIndex,endIndex+13);
-        System.out.println(input.replace(toBeReplaced,""));
+        String outputString = (input.replace(toBeReplaced,""));
+
+        try(PrintWriter out = new PrintWriter(file.getAbsolutePath().replace(".xml","") + "_2.xml")){
+            out.println(outputString);
+        }
+        catch (IOException a){}
 
         return file;
     }
